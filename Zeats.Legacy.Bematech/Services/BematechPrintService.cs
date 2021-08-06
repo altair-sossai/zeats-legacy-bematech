@@ -44,8 +44,18 @@ namespace Zeats.Legacy.Bematech.Services
         private static int PrintBarCode(PrintItem printItem)
         {
             MP2032.ConfiguraCodigoBarras(100, 2, 2, 1, 20);
-            var retorno = MP2032.ImprimeCodigoBarrasEAN13(printItem.Content);
-            return retorno;
+
+            switch (printItem.BarCodeType)
+            {
+                case BarCodeType.Ean13:
+                    return MP2032.ImprimeCodigoBarrasEAN13(printItem.Content);
+
+                case BarCodeType.Code128:
+                    return MP2032.ImprimeCodigoBarrasCODE128(printItem.Content);
+
+                default:
+                    return MP2032.ImprimeCodigoBarrasEAN13(printItem.Content);
+            }
         }
 
         private static int PrintText(PrintItem printItem)
